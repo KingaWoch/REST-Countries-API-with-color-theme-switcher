@@ -16,3 +16,52 @@
   padding: 0;
   box-sizing: border-box;
 }
+
+body.dark-theme {
+  background-color: var(--Dark-Mode-Bg);
+  color: var(--Dark-Mode-Text-and-Light-Mode-Elements);
+}
+
+body.light-theme {
+  background-color: var(--Light-Mode-Bg);
+  color: var(--Light-Mode-Text);
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 5rem;
+}
+
+body.dark-theme header {
+  background-color: var(--Dark-Mode-Elements);
+}
+
+body.light-theme header {
+  background-color: var(--Dark-Mode-Text-and-Light-Mode-Elements);
+}
+
+h1 {
+  font-size: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  color: inherit;
+  cursor: pointer;
+  border: none;
+  padding: 0.5rem 1rem;
+}
+
+.theme-toggle {
+  background-color: transparent;
+  font-weight: 600;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
