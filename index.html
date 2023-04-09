@@ -21,10 +21,24 @@
     <header>
       <h1><a href="/">Where in the world?</a></h1>
       <button class="theme-toggle">
+        <span class="sr-only">Toggle color theme</span>
         <i class="fa-solid fa-moon"></i>Dark Mode
       </button>
     </header>
-
+    <div class="filters">
+      <div class="input-field">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="search" placeholder="Search for a country..." />
+      </div>
+      <select name="ragion" id="region">
+        <option value="Filter by Region">Filter by Region</option>
+        <option value="Africa">Africa</option>
+        <option value="Americas">America</option>
+        <option value="Asia">Asia</option>
+        <option value="Europe">Europe</option>
+        <option value="Oceania">Oceania</option>
+      </select>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
