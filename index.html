@@ -25,20 +25,30 @@
         <i class="fa-solid fa-moon"></i>Dark Mode
       </button>
     </header>
-    <div class="filters">
-      <div class="input-field">
-        <i class="fa-solid fa-magnifying-glass"></i>
-        <input type="text" id="search" placeholder="Search for a country..." />
+    <main>
+      <div class="filters">
+        <div class="input-field">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input
+            type="text"
+            id="search"
+            placeholder="Search for a country..."
+            autocomplete="off"
+          />
+        </div>
+        <select name="ragion" id="region">
+          <option value="Filter by Region">Filter by Region</option>
+          <option value="Africa">Africa</option>
+          <option value="Americas">America</option>
+          <option value="Asia">Asia</option>
+          <option value="Europe">Europe</option>
+          <option value="Oceania">Oceania</option>
+        </select>
       </div>
-      <select name="ragion" id="region">
-        <option value="Filter by Region">Filter by Region</option>
-        <option value="Africa">Africa</option>
-        <option value="Americas">America</option>
-        <option value="Asia">Asia</option>
-        <option value="Europe">Europe</option>
-        <option value="Oceania">Oceania</option>
-      </select>
-    </div>
+      <section>
+        <ul class="countries"></ul>
+      </section>
+    </main>
     <script src="script.js"></script>
   </body>
 </html>
