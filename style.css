@@ -1,0 +1,18 @@
+:root {
+  --Dark-Mode-Elements: hsl(209, 23%, 22%);
+  --Dark-Mode-Bg: hsl(207, 26%, 17%);
+  --Light-Mode-Text: hsl(200, 15%, 8%);
+  --Light-Mode-Input: hsl(0, 0%, 52%);
+  --Light-Mode-Bg: hsl(0, 0%, 98%);
+  --Dark-Mode-Text-and-Light-Mode-Elements: hsl(0, 0%, 100%);
+
+  --fs-homepage-items: 0.875rem;
+  --fs-detail-page: 1rem;
+}
+
+* {
+  font-family: "Nunito Sans", sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
