@@ -22,28 +22,30 @@ themeToggleButton.addEventListener("click", toggleTheme);
 
 // COUNTRY LIST
 
-const apiUrl = "https://restcountries.com/v3.1/all";
+const renderDashboard = () => {
+  const apiUrl = "https://restcountries.com/v3.1/all";
 
-let countries;
+  let countries;
 
-fetch(apiUrl)
-  .then((res) => res.json())
-  .then((countriesList) => {
-    console.log(countriesList);
+  fetch(apiUrl)
+    .then((res) => res.json())
+    .then((countriesList) => {
+      // console.log(countriesList);
 
-    countries = countriesList.map((country) => {
-      return {
-        flagUrl: country.flags.png,
-        name: country.name.common,
-        population: country.population.toLocaleString("en-GB"),
-        region: country.region,
-        capital: country.capital && country.capital[0],
-        code: country.cca2,
-      };
+      countries = countriesList.map((country) => {
+        return {
+          flagUrl: country.flags.png,
+          name: country.name.common,
+          population: country.population.toLocaleString("en-GB"),
+          region: country.region,
+          capital: country.capital && country.capital[0],
+          code: country.cca2,
+        };
+      });
+      renderCountryList(countries);
+      //console.log(countries);
     });
-    renderCountryList(countries);
-    //console.log(countries);
-  });
+};
 
 // FLAG
 
@@ -59,7 +61,7 @@ const createFlagImg = (country) => {
 
 // INFO
 
-const createInfoContainer = (label, value) => {
+const createInfoElement = (label, value) => {
   const infoElement = document.createElement("p");
   const labelElement = document.createElement("strong");
   labelElement.innerText = `${label}: `;
@@ -73,7 +75,7 @@ const createInfoContainer = (label, value) => {
 const createCountryElement = (country) => {
   const countryContainer = document.createElement("li");
   const anchor = document.createElement("a");
-  anchor.href = `?country=${country.code}`;
+  anchor.href = `?country=${country.name}`;
 
   const infoContainer = document.createElement("div");
   infoContainer.classList.add("info-container");
@@ -84,9 +86,9 @@ const createCountryElement = (country) => {
 
   infoContainer.append(
     countryName,
-    createInfoContainer("Population", country.population),
-    createInfoContainer("Region", country.region),
-    createInfoContainer("Capital", country.capital)
+    createInfoElement("Population", country.population),
+    createInfoElement("Region", country.region),
+    createInfoElement("Capital", country.capital)
   );
 
   countryContainer.appendChild(anchor);
@@ -104,3 +106,130 @@ const renderCountryList = (countries) => {
   });
   return countryList;
 };
+
+// ------- DETAIL ELEMENT -------
+
+const renderDetail = () => {
+  const searchParams = new URLSearchParams(window.location.search);
+  const countryName = searchParams.get("country");
+
+  const apiUrlDetail = `https://restcountries.com/v3.1/name/${countryName}`;
+
+  fetch(apiUrlDetail)
+    .then((res) => res.json())
+    .then(([country]) => {
+      if (!country) {
+        goBackToCountryList();
+      }
+
+      country = {
+        flagUrl: country.flags.png,
+        name: country.name.common,
+        nativeName: Object.values(country.name.nativeName)[0].official,
+        population: country.population.toLocaleString("en-GB"),
+        region: country.region,
+        subRegion: country.subregion,
+        capital: country.capital && country.capital[0],
+        tld: country.tld[0],
+        currencies: Object.values(country.currencies)
+          .map((currency) => currency.name)
+          .join(", "),
+        languages: Object.values(country.languages).join(", "),
+        borders: country.borders,
+      };
+      renderCountryDetail(country);
+    });
+};
+
+const goBackToCountryList = () => {
+  window.location.href = "/";
+};
+
+// CREATE DETAIL ELEMENT
+
+const createDetailElement = (country) => {
+  const detailContainer = document.createElement("section");
+  detailContainer.classList.add("detail-container");
+
+  const flagImgEl = createFlagImg(country);
+
+  const detailInfoContainer = document.createElement("div");
+  detailInfoContainer.classList.add("detail-info-container");
+
+  const countryName = document.createElement("h2");
+  countryName.innerText = country.name;
+
+  const leftColumn = document.createElement("div");
+  leftColumn.classList.add("left-column");
+
+  leftColumn.append(
+    createInfoElement("Native Name", country.nativeName),
+    createInfoElement("Population", country.population),
+    createInfoElement("Region", country.region),
+    createInfoElement("Sub Region", country.subRegion),
+    createInfoElement("Capital", country.capital)
+  );
+
+  const rightColumn = document.createElement("div");
+  rightColumn.classList.add("right-column");
+
+  rightColumn.append(
+    createInfoElement("Top Level Domain", country.tld),
+    createInfoElement("Currencies", country.currencies),
+    createInfoElement("Languages", country.languages)
+  );
+
+  detailContainer.append(flagImgEl, detailInfoContainer);
+  detailInfoContainer.append(countryName, leftColumn, rightColumn);
+
+  if (country.borders && country.borders.length > 0) {
+    detailInfoContainer.appendChild(createBorderCountriesContainer(country));
+  }
+
+  return detailContainer;
+};
+
+// DETAIL BUTTON
+
+const createDetailButton = (text, link) => {
+  const anchor = document.createElement("a");
+  anchor.innerHTML = text;
+  anchor.classList.add("detail-link");
+  anchor.href = link;
+  return anchor;
+};
+
+// BORDER COUNTRIES
+
+const createBorderCountriesContainer = (country) => {
+  const borderCountriesContainer = document.createElement("div");
+  borderCountriesContainer.classList.add("border-countries");
+
+  const labelElement = document.createElement("strong");
+  labelElement.innerText = "Border Countries: ";
+
+  borderCountriesContainer.appendChild(labelElement);
+
+  country.borders.forEach((border) => {
+    console.log(border);
+    borderCountriesContainer.appendChild(
+      createDetailButton(border, `/?country=${border}`)
+    );
+  });
+  return borderCountriesContainer;
+};
+
+//RENDER COUNTRY DETAIL TO MAIN ELEMENT
+const renderCountryDetail = (country) => {
+  const mainElement = document.querySelector("main");
+  mainElement.innerHTML = "";
+  mainElement.appendChild(
+    createDetailButton(`<i class="fa-solid fa-arrow-left-long"></i> Back`, "/")
+  );
+  mainElement.appendChild(createDetailElement(country));
+};
+if (window.location.search.includes("?country=")) {
+  renderDetail();
+} else {
+  renderDashboard();
+}
