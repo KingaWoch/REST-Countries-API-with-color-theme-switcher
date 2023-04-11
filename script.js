@@ -38,11 +38,13 @@ const renderDashboard = () => {
   const apiUrl = "https://restcountries.com/v3.1/all";
 
   let countries;
+  let search = "";
+  let region = "";
 
   fetch(apiUrl)
     .then((res) => res.json())
     .then((countriesList) => {
-      console.log(countriesList);
+      //console.log(countriesList);
 
       countries = countriesList.map((country) => {
         return {
@@ -57,6 +59,31 @@ const renderDashboard = () => {
       renderCountryList(countries);
       //console.log(countries);
     });
+
+  // RENDER COUNTRIES BASED ON SEARCH
+
+  const filterAndRenderCountryList = () => {
+    const filteredCountries = countries.filter((country) => {
+      return (
+        country.name.toLowerCase().includes(search) &&
+        (!region || country.region === region)
+      );
+    });
+    //console.log(filteredCountries);
+    renderCountryList(filteredCountries);
+  };
+
+  document.querySelector("#search").addEventListener("input", (e) => {
+    //console.log(e.target.value);
+    search = e.target.value.toLowerCase().trim();
+    filterAndRenderCountryList();
+  });
+
+  document.querySelector("#region").addEventListener("change", (e) => {
+    region = e.target.value;
+
+    filterAndRenderCountryList();
+  });
 };
 
 // FLAG
@@ -113,6 +140,7 @@ const createCountryElement = (country) => {
 
 const renderCountryList = (countries) => {
   const countryList = document.querySelector(".countries");
+  countryList.innerHTML = "";
   countries.forEach((country) => {
     countryList.appendChild(createCountryElement(country));
   });
@@ -232,7 +260,7 @@ const createBorderCountriesContainer = (country) => {
   return borderCountriesContainer;
 };
 
-//RENDER COUNTRY DETAIL TO MAIN ELEMENT
+// RENDER COUNTRY DETAIL TO MAIN ELEMENT
 const renderCountryDetail = (country) => {
   const mainElement = document.querySelector("main");
   mainElement.innerHTML = "";
@@ -241,6 +269,7 @@ const renderCountryDetail = (country) => {
   );
   mainElement.appendChild(createDetailElement(country));
 };
+
 if (window.location.search.includes("?country=")) {
   renderDetail();
 } else {
