@@ -3,22 +3,34 @@
 const themeToggleButton = document.querySelector(".theme-toggle");
 const moonIcon = document.querySelector(".theme-toggle i");
 const body = document.querySelector("body");
+let theme = localStorage.getItem("theme");
 
 const toggleTheme = () => {
-  if (body.classList.contains("dark-theme")) {
+  if (theme === "dark-theme") {
     body.classList.remove("dark-theme");
     body.classList.add("light-theme");
     moonIcon.classList.remove("fa-solid");
     moonIcon.classList.add("fa-regular");
+    theme = "light-theme";
   } else {
     body.classList.add("dark-theme");
     body.classList.remove("light-theme");
     moonIcon.classList.add("fa-solid");
     moonIcon.classList.remove("fa-regular");
+    theme = "dark-theme";
   }
+  localStorage.setItem("theme", theme);
 };
 
 themeToggleButton.addEventListener("click", toggleTheme);
+
+if (theme === "dark-theme") {
+  body.classList.add("dark-theme");
+}
+
+if (theme === "light-theme") {
+  body.classList.add("light-theme");
+}
 
 // COUNTRY LIST
 
@@ -30,7 +42,7 @@ const renderDashboard = () => {
   fetch(apiUrl)
     .then((res) => res.json())
     .then((countriesList) => {
-      // console.log(countriesList);
+      console.log(countriesList);
 
       countries = countriesList.map((country) => {
         return {
@@ -209,6 +221,7 @@ const createBorderCountriesContainer = (country) => {
   labelElement.innerText = "Border Countries: ";
 
   borderCountriesContainer.appendChild(labelElement);
+  console.log(country);
 
   country.borders.forEach((border) => {
     console.log(border);

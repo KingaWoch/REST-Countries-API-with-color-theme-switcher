@@ -148,7 +148,7 @@ body.dark-theme #region {
   color: var(--Dark-Mode-Text-and-Light-Mode-Elements);
 }
 
-#region {
+body.light-theme #region {
   background-color: var(--Dark-Mode-Text-and-Light-Mode-Elements);
   color: var(--Light-Mode-Text);
   font-weight: 600;
