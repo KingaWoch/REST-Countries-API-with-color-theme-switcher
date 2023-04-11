@@ -32,6 +32,7 @@ body.light-theme {
 header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 1.3rem 5rem;
   -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.09);
@@ -259,4 +260,58 @@ body.light-theme .detail-link {
   align-items: center;
   flex-wrap: wrap;
   gap: 1rem;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  .countries {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  header {
+    padding: 1.3rem 1rem;
+  }
+
+  main {
+    padding: 2rem 1rem;
+  }
+
+  .countries {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .input-field {
+    width: 300px;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.1rem;
+  }
+
+  .theme-toggle {
+    font-size: 0.8rem;
+  }
+
+  .filters {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 3rem;
+  }
+
+  .input-field {
+    width: 100%;
+  }
+
+  .countries {
+    grid-template-columns: 1fr;
+  }
+
+  section {
+    padding: 0 2rem;
+  }
 }
